@@ -45,11 +45,11 @@ h1, h2, h3, h4 {
 
 /* Hero Section */
 .hero {
-    height: 90vh;
+    height: 100vh;
     padding: 0;
     position: relative;
     overflow: hidden;
-    background: #f8f9fa;
+    background: #000000;
 }
 
 /* Remove decoration */
