@@ -58,8 +58,9 @@ h1, h2, h3, h4 {
 .hero iframe {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 90%;
     border: none;
+    pointer-events: none; /* Prevent scroll capture by 3D model */
 }
 
 .hero-overlay {
