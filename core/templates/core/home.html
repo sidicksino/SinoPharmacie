@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | SinoPharmacie{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <iframe src='https://my.spline.design/reactiveorb-7RyPtJt3ln8P9Nfae0qKswwN/' frameborder='0' width='100%' height='100%'></iframe>
+    
+    <!-- Overlay Search (Optional, if user wants functionality kept opacity-based or absolute) -->
+    <div class="hero-overlay">
+        <h1>SinoPharmacie</h1>
+        <form action="{% url 'home' %}" method="get" class="search-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" name="q" placeholder="Search for medicines..." value="{{ search_query|default:'' }}">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</section>
+
+<!-- Featured Pharmacies -->
+<section id="pharmacies" class="section-container">
+    <div class="section-header">
+        <h2>Trusted Pharmacies Near You</h2>
+        <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    {% if pharmacies %}
+        <div class="grid pharmacies-grid">
+            {% for pharmacy in pharmacies %}
+            <div class="card pharmacy-card">
+                {% if pharmacy.image %}
+                    <img src="{{ pharmacy.image.url }}" alt="{{ pharmacy.name }}" class="card-img">
+                {% else %}
+                    <div class="card-img-placeholder"><i class="fas fa-clinic-medical"></i></div>
+                {% endif %}
+                <div class="card-body">
+                    <h3>
+                        {{ pharmacy.name }} 
+                        {% if pharmacy.is_verified %}
+                            <span class="verified-badge" title="Verified"><i class="fas fa-check-circle"></i></span>
+                        {% endif %}
+                    </h3>
+                    <p class="location"><i class="fas fa-map-marker-alt"></i> {{ pharmacy.city }}</p>
+                    <a href="#" class="btn btn-outline btn-sm">View Products</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-results">No pharmacies found. Try adjusting your search.</p>
+    {% endif %}
+</section>
+
+<!-- Featured Products -->
+<section id="products" class="section-container bg-light">
+    <div class="section-header">
+        <h2>Popular Medicines</h2>
+        <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    {% if products %}
+        <div class="grid products-grid">
+            {% for product in products %}
+            <div class="card product-card">
+                <div class="card-img-wrapper">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img">
+                    {% else %}
+                        <div class="card-img-placeholder product-placeholder"><i class="fas fa-pills"></i></div>
+                    {% endif %}
+                    {% if product.stock_quantity == 0 %}
+                        <span class="badge out-of-stock">Out of Stock</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <span class="category">{{ product.category }}</span>
+                    <h3>{{ product.name }}</h3>
+                    <p class="pharmacy-name">Sold by {{ product.pharmacy.name }}</p>
+                    <div class="price-row">
+                        <span class="price">${{ product.price }}</span>
+                        <a href="#" class="btn btn-primary btn-sm {% if product.stock_quantity == 0 %}disabled{% endif %}">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-results">No medicines found matching criteria.</p>
+    {% endif %}
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials section-container">
+    <div class="section-header center-header">
+        <h2>What Our Users Say</h2>
+    </div>
+    <div class="grid testimonials-grid">
+        <div class="card testimonial-card">
+            <div class="user-info">
+                <div class="avatar">SJ</div>
+                <div>
+                    <h4>Sarah Jenkins</h4>
+                    <span class="role">Verified User</span>
+                </div>
+            </div>
+            <p>"SinoPharmacie made it so easy to find my prescription when it was out of stock everywhere else. Highly recommend!"</p>
+            <div class="stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+        </div>
+        <div class="card testimonial-card">
+            <div class="user-info">
+                <div class="avatar">MK</div>
+                <div>
+                    <h4>Michael Kim</h4>
+                    <span class="role">Verified User</span>
+                </div>
+            </div>
+            <p>"Great interface and very fast delivery. The verified pharmacy badge gives me peace of mind."</p>
+            <div class="stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+            </div>
+        </div>
+        <div class="card testimonial-card">
+            <div class="user-info">
+                <div class="avatar">AL</div>
+                <div>
+                    <h4>Amina Lawal</h4>
+                    <span class="role">Verified User</span>
+                </div>
+            </div>
+            <p>"I love being able to compare prices across different pharmacies near me. Saved me a lot of money."</p>
+            <div class="stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Indicators -->
+<section class="trust-indicators">
+    <div class="indicator">
+        <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+        <h3>Safe & Certified</h3>
+        <p>All pharmacies are verified for your safety.</p>
+    </div>
+    <div class="indicator">
+        <div class="icon-box"><i class="fas fa-medal"></i></div>
+        <h3>Quality Guaranteed</h3>
+        <p>Authentic medicines sourced directly.</p>
+    </div>
+    <div class="indicator">
+        <div class="icon-box"><i class="fas fa-truck-medical"></i></div>
+        <h3>Fast Delivery</h3>
+        <p>Get your medicines delivered to your doorstep.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/home.js' %}"></script>
+{% endblock %}
