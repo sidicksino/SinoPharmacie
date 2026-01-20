@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | SinoPharmacie{% endblock %}
+
+{% block content %}
+<div class="section-container" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+    <div class="card" style="width: 100%; max-width: 400px; padding: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Welcome Back</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: #e74c3c; font-size: 0.85rem; margin-top: 0.25rem;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--text-light);">
+            Don't have an account? <a href="{% url 'register' %}" style="color: var(--primary-color); font-weight: 600;">Register here</a>
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Quick inline styles to match theme without editing main CSS heavily yet */
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        border-color: var(--primary-color);
+        outline: none;
+    }
+</style>
+{% endblock %}

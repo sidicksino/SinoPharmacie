@@ -58,14 +58,22 @@
             </div>
             <ul class="nav-links" id="nav-links">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="#">Pharmacies</a></li>
-                <li><a href="#">Products</a></li>
+                <li><a href="{% url 'home' %}#pharmacies">Pharmacies</a></li>
+                <li><a href="{% url 'home' %}#products">Products</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
             <div class="auth-buttons">
-                <button class="btn-login">Login</button>
-                <button class="btn-register">Register</button>
+                {% if user.is_authenticated %}
+                    <span style="margin-right: 1rem; color: var(--text-dark); font-weight: 600;">Hi, {{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-login" style="border-color: #e74c3c !important; color: #e74c3c;">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}"><button class="btn-login">Login</button></a>
+                    <a href="{% url 'register' %}"><button class="btn-register">Register</button></a>
+                {% endif %}
             </div>
         </nav>
     </header>

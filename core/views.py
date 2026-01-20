@@ -31,4 +31,27 @@ def home(request):
         'products': products,
         'search_query': query,
     }
+    context = {
+        'pharmacies': pharmacies,
+        'products': products,
+        'search_query': query,
+    }
     return render(request, 'core/home.html', context)
+
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
+from django.contrib.auth import login
+
+def register(request):
+    """
+    Handles user registration using Django's built-in form.
+    """
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user) # Auto-login after registration
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'core/register.html', {'form': form})
