@@ -1,54 +1,104 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Register | SinoPharmacie{% endblock %}
+{% block title %}Create Account | SinoPharmacie{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}?v=2.0">
+{% endblock %}
 
 {% block content %}
-<div class="section-container" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
-    <div class="card" style="width: 100%; max-width: 450px; padding: 2rem;">
-        <h2 style="text-align: center; margin-bottom: 2rem;">Create Account</h2>
-        
-        <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small style="color: var(--text-light); display: block; margin-top: 0.25rem;">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% if field.errors %}
-                        <div style="color: #e74c3c; font-size: 0.85rem; margin-top: 0.25rem;">
-                            {{ field.errors }}
-                        </div>
+<div class="auth-page-container">
+    <div class="auth-card">
+        <!-- Left Side Illustration -->
+        <div class="auth-illustration">
+             <img src="https://cdn-icons-png.flaticon.com/512/3063/3063822.png" alt="Register Illustration">
+        </div>
+
+        <!-- Right Side Form -->
+        <div class="auth-form-container">
+            <div class="auth-header">
+                <a href="{% url 'home' %}" class="logo">Sino<span>Pharmacie</span></a>
+                <p>Join us for a healthier life.</p>
+            </div>
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <!-- We render form fields manually to match design, mapping to the Django form -->
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                        {{ form.first_name.errors }}
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                        {{ form.last_name.errors }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email Address</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    <input type="text" name="username" id="id_username" class="form-input" placeholder="Choose a username" required>
+                    {{ form.username.errors }}
+                </div>
+
+                <!-- Phone number omitted for now as it requires model changes -->
+
+                <div class="form-group">
+                    <label for="id_password1">Password</label>
+                    <div class="password-group">
+                        <input type="password" name="password1" id="id_password1" placeholder="Create a password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('id_password1')"></i>
+                    </div>
+                    {% if form.password1.help_text %}
+                    <small style="color: var(--text-light); font-size: 0.75rem;">{{ form.password1.help_text }}</small>
                     {% endif %}
                 </div>
-            {% endfor %}
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Register</button>
-        </form>
-        
-        <p style="text-align: center; margin-top: 1.5rem; color: var(--text-light);">
-            Already have an account? <a href="{% url 'login' %}" style="color: var(--primary-color); font-weight: 600;">Login here</a>
-        </p>
+
+                <div class="form-group">
+                    <label for="id_password2">Confirm Password</label>
+                    <div class="password-group">
+                        <input type="password" name="password2" id="id_password2" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <div class="form-group terms-check">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms" style="margin:0; font-weight: normal;">I agree to the <a href="#" style="color: var(--primary-color);">Terms & Conditions</a></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="{% url 'login' %}">Login</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<style>
-    input[type="text"], input[type="password"], input[type="email"] {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
+<script>
+    function togglePassword(fieldId) {
+        const passwordInput = document.getElementById(fieldId);
+        const icon = passwordInput.nextElementSibling;
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     }
-    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
-        border-color: var(--primary-color);
-        outline: none;
-    }
-    ul.errorlist {
-        list-style: none;
-        padding: 0;
-        color: #e74c3c;
-    }
-</style>
+</script>
 {% endblock %}

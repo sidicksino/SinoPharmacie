@@ -118,5 +118,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # Media files (User uploaded)
+# Media files (User uploaded)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Authentication Redirects
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

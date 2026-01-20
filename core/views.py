@@ -38,20 +38,18 @@ def home(request):
     }
     return render(request, 'core/home.html', context)
 
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect
-from django.contrib.auth import login
+from .forms import RegisterForm
 
 def register(request):
     """
-    Handles user registration using Django's built-in form.
+    Handles user registration using custom RegisterForm.
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user) # Auto-login after registration
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
